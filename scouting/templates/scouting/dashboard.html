@@ -1,0 +1,249 @@
+{% extends 'scouting/base.html' %}
+
+{% block title %}Dashboard – ScoutUG{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="dash-header">
+
+        <h1>
+            Welcome, {{ user.first_name }}
+            <span class="role-badge">
+                {{ profile.role|title }}
+            </span>
+        </h1>
+
+        <p>
+            {{ user.email }} · 📍 {{ profile.district|default:"Uganda" }}
+        </p>
+
+    </div>
+
+    <!-- PLAYER DASHBOARD -->
+    {% if profile.role == 'player' %}
+
+    <div class="dash-grid">
+
+        <!-- ACTIONS -->
+        <div class="card">
+
+            <h3>⚡ Quick Actions</h3>
+
+            {% if not player %}
+
+                <a href="{% url 'create_profile' %}" class="btn">
+                    ➕ Create Player Profile
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'edit_profile' %}" class="btn">✏️ Edit Profile</a>
+                <a href="{% url 'update_stats' %}" class="btn">📊 Update Stats</a>
+                <a href="{% url 'upload_video' %}" class="btn">🎥 Upload Video</a>
+                <a href="{% url 'player_detail' player.pk %}" class="btn">👁 View Profile</a>
+
+            {% endif %}
+
+        </div>
+
+        <!-- STATS -->
+        <div class="card">
+
+            <h3>📊 My Stats</h3>
+
+            {% if player and player.stats %}
+
+            <div class="stats">
+
+                <div><b>{{ player.stats.matches_played }}</b><span>Matches</span></div>
+                <div><b>{{ player.stats.goals }}</b><span>Goals</span></div>
+                <div><b>{{ player.stats.assists }}</b><span>Assists</span></div>
+                <div><b>{{ player.stats.clean_sheets }}</b><span>Clean Sheets</span></div>
+
+            </div>
+
+            {% else %}
+                <p>No stats yet. Add your performance data.</p>
+            {% endif %}
+
+        </div>
+
+        <!-- RATINGS -->
+        <div class="card">
+
+            <h3>⭐ Ratings</h3>
+
+            {% if ratings %}
+
+                <h2>{{ player.average_rating }}/10</h2>
+                <p>from {{ ratings.count }} rating{{ ratings.count|pluralize }}</p>
+
+                <ul>
+                    {% for r in ratings|slice:":3" %}
+                        <li>
+                            <b>{{ r.evaluator.get_full_name }}</b><br>
+                            {{ r.overall_score }}/10 · {{ r.rated_at|date:"M d, Y" }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            {% else %}
+                <p>No ratings yet.</p>
+            {% endif %}
+
+        </div>
+
+        <!-- VIDEOS -->
+        <div class="card">
+
+            <h3>🎥 Videos</h3>
+
+            {% if videos %}
+
+                {% for v in videos %}
+                    <div class="video-item">
+                        <b>{{ v.title }}</b><br>
+                        {{ v.uploaded_at|date:"M d, Y" }}
+                        <a href="{% url 'delete_video' v.id %}">🗑</a>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <p>No videos uploaded yet.</p>
+            {% endif %}
+
+            <a href="{% url 'upload_video' %}" class="btn">+ Add Video</a>
+
+        </div>
+
+    </div>
+
+    <!-- SCOUT / COACH DASHBOARD -->
+    {% else %}
+
+    <div class="card">
+
+        <h3>📈 Platform Overview</h3>
+
+        <p><b>{{ total_players }}</b> Total Players</p>
+        <p><b>{{ total_ratings }}</b> Total Ratings</p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>⚽ Recent Players</h3>
+
+        {% for player in recent_players %}
+
+            <div class="player-row">
+
+                {% if player.profile_picture %}
+                    <img src="{{ player.profile_picture.url }}" />
+                {% else %}
+                    ⚽
+                {% endif %}
+
+                <div>
+                    <b>{{ player.user.get_full_name }}</b><br>
+                    {{ player.get_position_display }} · {{ player.district }} · Age {{ player.age }}
+
+                    {% if player.average_rating %}
+                        <span>★ {{ player.average_rating }}/10</span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        {% empty %}
+            <p>No players yet.</p>
+        {% endfor %}
+
+        <a href="{% url 'player_list' %}">View All →</a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<style>
+
+.dashboard{
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.dash-header{
+    margin-bottom:25px;
+}
+
+.role-badge{
+    background:#00d26a;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    margin-left:10px;
+}
+
+.dash-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.btn{
+    display:block;
+    margin:10px 0;
+    padding:10px;
+    background:#0d1b2a;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    text-align:center;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.stats div{
+    background:#f5f7fa;
+    padding:10px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.player-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.player-row img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+}
+
+.video-item{
+    margin-bottom:10px;
+}
+
+</style>
+
+{% endblock %}

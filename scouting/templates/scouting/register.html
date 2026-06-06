@@ -1,0 +1,253 @@
+{% extends 'scouting/base.html' %}
+
+{% block title %}Register – ScoutUG{% endblock %}
+
+{% block content %}
+
+<div class="register-container">
+
+    <div class="register-card">
+
+        <div class="register-header">
+            <div class="logo-icon">⚽</div>
+            <h1>Join ScoutUG</h1>
+            <p>Create your account and showcase your football talent.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="role-selector">
+                <div class="role-card">
+                    <span>🏃</span>
+                    <p>Player</p>
+                </div>
+
+                <div class="role-card">
+                    <span>🔍</span>
+                    <p>Scout</p>
+                </div>
+
+                <div class="role-card">
+                    <span>📋</span>
+                    <p>Coach</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>First Name</label>
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name</label>
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    {{ form.phone }}
+                </div>
+
+                <div class="form-group">
+                    <label>District</label>
+                    {{ form.district }}
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="register-btn">
+                Create Account
+            </button>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign In</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+
+.register-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+.register-card{
+    width:100%;
+    max-width:900px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.register-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo-icon{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+.register-header h1{
+    color:#0d1b2a;
+    margin-bottom:10px;
+}
+
+.register-header p{
+    color:#666;
+}
+
+.role-selector{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.role-card{
+    background:#f8f9fa;
+    border:2px solid transparent;
+    border-radius:15px;
+    text-align:center;
+    padding:20px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.role-card:hover{
+    border-color:#00d26a;
+    transform:translateY(-3px);
+}
+
+.role-card span{
+    font-size:32px;
+}
+
+.role-card p{
+    margin-top:10px;
+    font-weight:600;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    outline:none;
+    border-color:#00d26a;
+    box-shadow:0 0 8px rgba(0,210,106,.25);
+}
+
+.errorlist{
+    color:red;
+    list-style:none;
+    margin-top:5px;
+    font-size:14px;
+}
+
+.register-btn{
+    width:100%;
+    background:#00d26a;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:12px;
+    margin-top:25px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.register-btn:hover{
+    background:#00b85d;
+}
+
+.login-link{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-link a{
+    color:#00d26a;
+    text-decoration:none;
+    font-weight:600;
+}
+
+@media(max-width:768px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .role-selector{
+        grid-template-columns:1fr;
+    }
+
+    .register-card{
+        padding:25px;
+    }
+}
+
+</style>
+
+{% endblock %}

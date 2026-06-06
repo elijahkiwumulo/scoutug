@@ -1,0 +1,38 @@
+{% extends 'scouting/base.html' %} {% block title %}Browse Players “ ScoutUG{% endblock %} {% block extra_css %} {% endblock %} {% block content %}
+Browse Players
+
+Search and discover football talent across Uganda
+
+Player Name {{ form.name }}
+Position {{ form.position }}
+District {{ form.district }}
+Min Age {{ form.min_age }}
+Max Age {{ form.max_age }}
+Search
+{{ players.count }} player{{ players.count|pluralize }} found
+{% if players %}
+{% for player in players %}
+{% if player.profile_picture %}  {% else %}
+
+{% endif %} {{ PLAYER.GET_POSITION_DISPLAY }}
+{{ player.user.get_full_name }}
+ {{ player.district|default:"Uganda" }}
+Age {{ player.age }} Â· {{ player.get_preferred_foot_display }} foot {% if player.school_or_club %}
+ {{ player.school_or_club }}{% endif %}
+{% with player.average_rating as r %} {% if r %}
+  {{ r }} / 10
+{% else %}
+Not rated yet
+{% endif %} {% endwith %} {% if player.stats %}
+ {{ player.stats.goals }}G
+ {{ player.stats.assists }}A
+ {{ player.stats.matches_played }}M
+{% endif %}
+{% endfor %}
+{% else %}
+
+No players found matching your search criteria.
+
+Clear Filters
+{% endif %}
+{% endblock %}

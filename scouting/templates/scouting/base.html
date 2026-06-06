@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ScoutUG{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#f5f7fa;
+            color:#333;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* NAVBAR */
+        .navbar{
+            background:#0d1b2a;
+            padding:15px 8%;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            color:white;
+            font-size:28px;
+            font-weight:700;
+            text-decoration:none;
+        }
+
+        .logo span{
+            color:#00d26a;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:20px;
+            align-items:center;
+        }
+
+        .nav-links a{
+            color:white;
+            text-decoration:none;
+            transition:0.3s;
+            font-weight:500;
+        }
+
+        .nav-links a:hover{
+            color:#00d26a;
+        }
+
+        .btn{
+            padding:10px 18px;
+            border-radius:8px;
+            text-decoration:none;
+            transition:0.3s;
+        }
+
+        .btn-login{
+            background:#00d26a;
+            color:white;
+        }
+
+        .btn-login:hover{
+            background:#00b85d;
+        }
+
+        /* HERO */
+        .hero{
+            background:linear-gradient(rgba(0,0,0,.65),
+            rgba(0,0,0,.65)),
+            url('https://images.unsplash.com/photo-1574629810360-7efbbe195018');
+            background-size:cover;
+            background-position:center;
+            height:60vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            color:white;
+            padding:20px;
+        }
+
+        .hero-content h1{
+            font-size:3rem;
+            margin-bottom:15px;
+        }
+
+        .hero-content p{
+            font-size:1.1rem;
+            margin-bottom:25px;
+        }
+
+        .hero-btn{
+            background:#00d26a;
+            color:white;
+            padding:14px 30px;
+            border-radius:30px;
+            text-decoration:none;
+            font-weight:600;
+        }
+
+        .hero-btn:hover{
+            background:#00b85d;
+        }
+
+        /* MESSAGES */
+        .messages{
+            width:90%;
+            margin:20px auto;
+        }
+
+        .alert{
+            background:#d4edda;
+            color:#155724;
+            padding:15px;
+            border-radius:10px;
+            margin-bottom:10px;
+        }
+
+        /* MAIN CONTENT */
+        .container{
+            width:90%;
+            margin:30px auto;
+            flex:1;
+        }
+
+        /* FOOTER */
+        footer{
+            background:#0d1b2a;
+            color:white;
+            text-align:center;
+            padding:20px;
+            margin-top:50px;
+        }
+
+        footer span{
+            color:#00d26a;
+        }
+
+        @media(max-width:768px){
+
+            .navbar{
+                flex-direction:column;
+                gap:15px;
+            }
+
+            .nav-links{
+                flex-wrap:wrap;
+                justify-content:center;
+            }
+
+            .hero-content h1{
+                font-size:2rem;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="/" class="logo">⚽ Scout<span>UG</span></a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="{% url 'player_list' %}">Players</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn btn-login">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-login">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Uganda's Next Football Star</h1>
+            <p>
+                Connecting talented players with scouts, coaches and opportunities.
+            </p>
+
+            <a href="{% url 'player_list' %}" class="hero-btn">
+                Explore Players
+            </a>
+        </div>
+    </section>
+
+    <!-- DJANGO MESSAGES -->
+    <div class="messages">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        ⚽ <span>ScoutUG</span> — Football Talent Identification Platform
+        <br>
+        Uganda 🇺🇬 | © {{ year|default:"2026" }}
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

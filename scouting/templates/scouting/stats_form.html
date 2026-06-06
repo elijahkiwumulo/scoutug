@@ -1,0 +1,199 @@
+{% extends 'scouting/base.html' %}
+
+{% block title %}Update Stats – ScoutUG{% endblock %}
+
+{% block content %}
+
+<div class="stats-container">
+
+    <div class="stats-card">
+
+        <div class="stats-header">
+            <h1>⚽ Update Player Statistics</h1>
+            <p>Enter your latest match performance statistics.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Matches Played</label>
+                    {{ form.matches_played }}
+                </div>
+
+                <div class="form-group">
+                    <label>Goals</label>
+                    {{ form.goals }}
+                </div>
+
+                <div class="form-group">
+                    <label>Assists</label>
+                    {{ form.assists }}
+                </div>
+
+                <div class="form-group">
+                    <label>Clean Sheets</label>
+                    {{ form.clean_sheets }}
+                </div>
+
+                <div class="form-group">
+                    <label>Yellow Cards</label>
+                    {{ form.yellow_cards }}
+                </div>
+
+                <div class="form-group">
+                    <label>Red Cards</label>
+                    {{ form.red_cards }}
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Top Speed (km/h)</label>
+                    {{ form.speed_kmh }}
+                </div>
+
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="save-btn">
+                    💾 Save Stats
+                </button>
+
+                <a href="javascript:history.back()" class="cancel-btn">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+
+.stats-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+.stats-card{
+    width:100%;
+    max-width:850px;
+    background:#fff;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.stats-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.stats-header h1{
+    color:#0d1b2a;
+    margin-bottom:10px;
+}
+
+.stats-header p{
+    color:#666;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-weight:600;
+    color:#333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.form-group input:focus{
+    border-color:#00d26a;
+    outline:none;
+    box-shadow:0 0 8px rgba(0,210,106,0.3);
+}
+
+.full-width{
+    grid-column:1/-1;
+}
+
+.button-group{
+    display:flex;
+    gap:15px;
+    margin-top:30px;
+}
+
+.save-btn{
+    background:#00d26a;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    background:#00b85d;
+}
+
+.cancel-btn{
+    background:#e9ecef;
+    color:#333;
+    text-decoration:none;
+    padding:14px 30px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.cancel-btn:hover{
+    background:#d6d8db;
+}
+
+@media(max-width:768px){
+
+    .stats-card{
+        padding:25px;
+    }
+
+    .button-group{
+        flex-direction:column;
+    }
+
+    .save-btn,
+    .cancel-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+
+</style>
+
+{% endblock %}

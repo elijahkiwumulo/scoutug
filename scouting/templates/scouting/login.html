@@ -1,0 +1,165 @@
+{% extends 'scouting/base.html' %}
+
+{% block title %}Login – ScoutUG{% endblock %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="login-header">
+            <div class="login-icon">🔐</div>
+            <h1>Sign In</h1>
+            <p>Welcome back to ScoutUG</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="error-box">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <button type="submit" class="login-btn">
+                Sign In
+            </button>
+
+            <div class="register-link">
+                No account?
+                <a href="{% url 'register' %}">
+                    Register Free
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<style>
+
+.login-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:70vh;
+    padding:20px;
+}
+
+.login-card{
+    width:100%;
+    max-width:500px;
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.login-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.login-icon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.login-header h1{
+    color:#0d1b2a;
+    margin-bottom:10px;
+}
+
+.login-header p{
+    color:#666;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.form-group input{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.form-group input:focus{
+    outline:none;
+    border-color:#00d26a;
+    box-shadow:0 0 8px rgba(0,210,106,.25);
+}
+
+.errorlist{
+    list-style:none;
+    color:#dc3545;
+    margin-top:5px;
+    font-size:14px;
+}
+
+.error-box{
+    background:#ffe5e5;
+    color:#b00020;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.login-btn{
+    width:100%;
+    border:none;
+    background:#00d26a;
+    color:white;
+    padding:14px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#00b85d;
+}
+
+.register-link{
+    text-align:center;
+    margin-top:20px;
+}
+
+.register-link a{
+    color:#00d26a;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.register-link a:hover{
+    text-decoration:underline;
+}
+
+</style>
+
+{% endblock %}
