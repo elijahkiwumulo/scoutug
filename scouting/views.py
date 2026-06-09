@@ -52,12 +52,7 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    profile = getattr(request.user, 'profile', None)
-
-    if profile is None:
-        messages.error(request, "No user profile found.")
-        return redirect('home')
-
+    profile = request.user.profile
     context = {'profile': profile}
     if profile.role == 'player':
         try:
