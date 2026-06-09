@@ -195,3 +195,22 @@ def player_detail(request, pk):
         'user_rating': user_rating,
         'rating_form': rating_form,
     })
+  try:
+    profile = request.user.profile
+except UserProfile.DoesNotExist:
+    messages.error(request, "Profile not found. Please contact the administrator.")
+    return redirect('home')
+  user = form.save()
+login(request, user)
+return redirect('dashboard')
+
+
+user = form.save()
+
+UserProfile.objects.create(
+    user=user,
+    role='player'  # or your default role
+)
+
+login(request, user)
+return redirect('dashboard')
